@@ -36,8 +36,9 @@ Vorarbeit; sie werden hier nicht als eigene Neuentwicklung ausgegeben.
 ## Erstellung und Prüfung
 
 Der separate persönliche Workflow `German Windows preview` verwendet ausschließlich
-vorhandene gemeinsame Upstream-Workflows: Windows-Tests über `gate.yml`, anschließend
-Paketierung mit `release.yml` im Modus `dry-run`. Er veröffentlicht keine Releases,
+vorhandene gemeinsame Upstream-Workflows: Windows-Tests über `gate.yml`, parallel dazu
+Paketierung mit `release.yml` im Modus `dry-run`. Pakete dürfen erst nach erfolgreichen
+Tests als geprüft weitergegeben werden. Er veröffentlicht keine Releases,
 signiert keine Pakete und startet keine kostenpflichtigen macOS-Runner. Die gemeinsame
 Paketierung erstellt zusätzlich die dort fest vorgesehenen Linux-/ARM-Pakete.
 Die Eingriffe in die CI dienen nur dieser persönlichen Vorschau, nicht einem

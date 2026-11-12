@@ -6,8 +6,11 @@ on:
     branches: [feature/german-formulas-0.19.1]
   workflow_dispatch:
 
+# The shared release workflow declares these permissions even for dry-run;
+# dry-run skips the publishing/signing jobs themselves.
 permissions:
-  contents: read
+  contents: write
+  packages: write
 
 concurrency:
   group: german-preview-${{ github.ref }}
@@ -31,7 +34,6 @@ jobs:
         cargo test --locked -p gridcraft-ui-egui german
         cargo test --locked -p gridcraft-ui-egui autocomplete_folds
   preview:
-    needs: german-tests
     uses: storytold/craft-common-actions/.github/workflows/release.yml@main
     with:
       app-name: gridcraft
