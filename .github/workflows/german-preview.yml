@@ -1,0 +1,44 @@
+name: German Windows preview
+
+# Personal preview build. Reuses upstream packaging; never publishes or signs a release.
+on:
+  push:
+    branches: [feature/german-formulas-0.19.1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: german-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  german-tests:
+    uses: storytold/craft-common-actions/.github/workflows/gate.yml@main
+    with:
+      os: '["windows-latest"]'
+      targets: ""
+      tools: ""
+      toolchain: "1.95.0"
+      craft-fonts-ref: b076417b5880bd4154bd22f00695b1d28c6bea83
+      timeout-minutes: 90
+      command: |
+        set -euo pipefail
+        cargo fmt --all -- --check
+        cargo test --locked -p gridcraft-formula
+        cargo test --locked -p gridcraft-ui-egui formula_locale
+        cargo test --locked -p gridcraft-ui-egui german
+        cargo test --locked -p gridcraft-ui-egui autocomplete_folds
+  preview:
+    needs: german-tests
+    uses: storytold/craft-common-actions/.github/workflows/release.yml@main
+    with:
+      app-name: gridcraft
+      app-title: GridCraft
+      craft-fonts-ref: b076417b5880bd4154bd22f00695b1d28c6bea83
+      dry-run: true
+      has-web: false
+      has-riscv64: false
+      has-freebsd: false
+      has-arch: false
